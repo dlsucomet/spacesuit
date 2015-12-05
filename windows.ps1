@@ -64,13 +64,13 @@ function Sync-Package {
 		if (Test-Installed $Package) {
 			if (Test-Upgradable $Package) {
 				Write-Host "Upgrading" $Package "..."
-				cup $Package -whatif
+				cup $Package
 			} else {
 				Write-Host "Already using the latest version of $Package. Skipping ..."
 			}
 		} else {
 			Write-Host "Installing $package ..."
-			cinst $Package -whatif
+			cinst $Package
 		}
 	}
 }
