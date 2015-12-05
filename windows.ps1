@@ -75,6 +75,20 @@ function Sync-Package {
 	}
 }
 
+function Install-Chocolatey {
+	[CmdletBinding()]
+	param()
+	process {
+		if ((Get-Command "choco.exe" -ErrorAction SilentlyContinue) -eq $null) {
+			Write-Host "Installing Chocolatey"
+			iex ((New-Object Net.WebClient).DownloadString("http://chocolatey.org/install.ps1"))
+		} else {
+			Write-Host "Chocolatey already installed. Skipping ..."
+		}
+	}
+}
+
+Install-Chocolatey
 Sync-Package "sudo"
 Sync-Package "slack"
 Sync-Package "sublimetext3"
