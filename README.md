@@ -1,4 +1,4 @@
-# Spacesuit
+# Spacesuit [BETA]
 A script that will turn your computer into a software development workhorse.
 
 You can run the script multiple times on the same machine safely. It installs,
@@ -18,14 +18,14 @@ And the `win` script on:
 * Windows 8.1
 * Windows 10
 
-# Install
+# Using Spacesuit
 
 ## OS X
 
 Open up Terminal and run this command:
 
 ```
-echo "It's not yet ready"
+curl -sSL https://raw.githubusercontent.com/dlsucomet/spacesuit/master/mac | sh
 ```
 
 ## Windows
@@ -33,5 +33,28 @@ echo "It's not yet ready"
 Open up command prompt with administrative privileges and run this command:
 
 ```
-echo "It's not yet ready"
+@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/dlsucomet/spacesuit/master/windows.ps1'))"
 ```
+
+# What's included in Spacesuit?
+
+## All
+
+* [git](https://git-scm.com/)
+* [Sublime Text 3](https://www.sublimetext.com/3)
+* [Slack](https://slack.com/)
+
+## OS X
+
+* [Homebrew](http://brew.sh/)
+* [Homebrew Cask](http://caskroom.io/)
+
+## Windows
+
+* [chocolatey](chocolatey.org)
+* [cmder](http://cmder.net/)
+
+# Inspiration
+
+Inspiration for this project mainly comes from thoughtbot's awesome
+[`laptop`](https://github.com/thoughtbot/laptop) script.
