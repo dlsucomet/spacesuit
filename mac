@@ -10,21 +10,21 @@ fancy_echo() {
   printf "\n$fmt\n" "$@"
 }
 
-append_to_zshrc() {
-  local text="$1" zshrc
+append_to_bashrc() {
+  local text="$1" bashrc
   local skip_new_line="${2:-0}"
 
-  if [ -w "$HOME/.zshrc.local" ]; then
-    zshrc="$HOME/.zshrc.local"
+  if [ -w "$HOME/.bashrc.local" ]; then
+    bashrc="$HOME/.bashrc.local"
   else
-    zshrc="$HOME/.zshrc"
+    bashrc="$HOME/.bashrc"
   fi
 
-  if ! grep -Fqs "$text" "$zshrc"; then
+  if ! grep -Fqs "$text" "$bashrc"; then
     if [ "$skip_new_line" -eq 1 ]; then
-      printf "%s\n" "$text" >> "$zshrc"
+      printf "%s\n" "$text" >> "$bashrc"
     else
-      printf "\n%s\n" "$text" >> "$zshrc"
+      printf "\n%s\n" "$text" >> "$bashrc"
     fi
   fi
 }
@@ -38,20 +38,12 @@ if [ ! -d "$HOME/.bin/" ]; then
   mkdir "$HOME/.bin"
 fi
 
-if [ ! -f "$HOME/.zshrc" ]; then
-  touch "$HOME/.zshrc"
+if [ ! -f "$HOME/.bashrc" ]; then
+  touch "$HOME/.bashrc"
 fi
 
 # shellcheck disable=SC2016
-append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
-
-case "$SHELL" in
-  */zsh) : ;;
-  *)
-    fancy_echo "Changing your shell to zsh ..."
-      chsh -s "$(which zsh)"
-    ;;
-esac
+append_to_bashrc 'export PATH="$HOME/.bin:$PATH"'
 
 brew_install_or_upgrade() {
   if brew_is_installed "$1"; then
@@ -89,21 +81,6 @@ brew_expand_alias() {
   brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
 }
 
-cask_install() {
-  if cask_is_installed "$1"; then
-    fancy_echo "%s is already installed. Skipping ..." "$1"
-  else
-    fancy_echo "Installing %s ..." "$1"
-    brew cask install "$@"
-  fi
-}
-
-cask_is_installed() {
-  local name="$1"
-
-  brew cask list -1 | grep -Fqx "$name"
-}
-
 brew_launchctl_restart() {
   # shellcheck disable=SC2155
   local name="$(brew_expand_alias "$1")"
@@ -120,15 +97,19 @@ brew_launchctl_restart() {
   launchctl load "$HOME/Library/LaunchAgents/$plist" >/dev/null
 }
 
-gem_install_or_update() {
-  if gem list "$1" --installed > /dev/null; then
-    fancy_echo "Updating %s ..." "$1"
-    gem update "$@"
+cask_install() {
+  if cask_is_installed "$1"; then
+    fancy_echo "%s is already installed. Skipping ..." "$1"
   else
     fancy_echo "Installing %s ..." "$1"
-    gem install "$@"
-    rbenv rehash
+    brew cask install "$@"
   fi
+}
+
+cask_is_installed() {
+  local name="$1"
+
+  brew cask list -1 | grep -Fqx "$name"
 }
 
 if ! command -v brew >/dev/null; then
@@ -136,10 +117,10 @@ if ! command -v brew >/dev/null; then
     curl -fsS \
       'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
 
-    append_to_zshrc '# recommended by brew doctor'
+    append_to_bashrc '# recommended by brew doctor'
 
     # shellcheck disable=SC2016
-    append_to_zshrc 'export PATH="/usr/local/bin:$PATH"' 1
+    append_to_bashrc 'export PATH="/usr/local/bin:$PATH"' 1
 
     export PATH="/usr/local/bin:$PATH"
 else
