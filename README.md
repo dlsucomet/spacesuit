@@ -12,7 +12,7 @@ You can use the `mac` script on:
 * OS X Yosemite (10.10)
 * OS X El Capitan (10.11)
 
-And the `win` script on:
+And the `windows.ps1` script on:
 
 * Windows 7
 * Windows 8.1
