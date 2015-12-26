@@ -1,4 +1,5 @@
-# Spacesuit [BETA]
+<img src="header.png" alt="Spacesuit" width="500px">
+
 A script that will turn your computer into a software development workhorse.
 
 You can run the script multiple times on the same machine safely. It installs,
