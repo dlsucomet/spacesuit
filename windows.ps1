@@ -90,6 +90,6 @@ function Sync-Package {
 Install-Chocolatey
 
 # Packages
-Sync-Package "sudo"
+Sync-Package "git"
 Sync-Package "slack"
 Sync-Package "sublimetext3"
